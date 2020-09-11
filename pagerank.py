@@ -154,10 +154,8 @@ class WebGraph():
             while k < max_iterations:
                 # Implement Equation 5.1 from PageRank Paper
                 x1 = x0
-                x0 = alpha * torch.sparse.mm(self.P.t(), x0).t() + (alpha * x0.t() * a + (1 - alpha)) * v.t()
-                print('x0.shape=', x0.shape)
+                x0 = (alpha * torch.sparse.mm(self.P.t(), x0).t() + (alpha * x0.t() * a + (1 - alpha)) * v.t()).t()
                 
-
                 if abs(torch.norm(x0)-torch.norm(x1)) <= epsilon:
                     # Loop Out
                     break                 
