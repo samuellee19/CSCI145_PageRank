@@ -1,6 +1,6 @@
 # Pagerank Project
-================
-Name: Seungho (Samuel) Lee
+
+Name: Seungho (Samuel) Lee\
 Date: 9/13/2020
 
 This project involves creating a simple search engine, using the PageRank alogrithm with Power Iteration method, for a following website: `https://www.lawfareblog.com`.
