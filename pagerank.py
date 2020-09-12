@@ -143,10 +143,12 @@ class WebGraph():
 
             # main loop
             a = torch.zeros(n) # 1) Create a - vector that has 1 for every url that doesn't have outlink
-            
+            a_sum = torch.sparse.sum(self.P, 1)
+
             for i in range(n):
                 # If whole row is all-zero, add 1 to corresponding dimension to a vector
-                if all( j == 0 for j in self.P.to_dense()[i]):
+                # if all( j == 0 for j in self.P.to_dense()[i]) --> computationally more complex
+                if a_sum[i] == 0:
                     a[i] = 1
 
             k = 0
@@ -156,13 +158,15 @@ class WebGraph():
                 x1 = x0
                 x0 = (alpha * torch.sparse.mm(self.P.t(), x0).t() + (alpha * x0.t() * a + (1 - alpha)) * v.t()).t()
                 
-                if abs(torch.norm(x0)-torch.norm(x1)) <= epsilon:
+                k += 1
+
+                if torch.norm(x0 - x1) <= epsilon:
                     # Loop Out
-                    break                 
-
-                else:                    
-                    k += 1
-
+                    break
+                
+                else:
+                    continue
+                    
             x = x0.squeeze() 
 
             return x
